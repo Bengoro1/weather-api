@@ -54,6 +54,57 @@ export default function page() {
   }
   
   const currentCondition = document.createElement('div');
+  currentCondition.classList.add('current-condition');
+  currentDay.appendChild(currentCondition);
+
+  const conditionText = document.createElement('div');
+  conditionText.textContent = obj.current.condition.text;
+  currentCondition.appendChild(conditionText);
+
+  const conditionImg = document.createElement('img');
+  conditionImg.src = 'https:' + obj.current.condition.icon;
+  currentCondition.appendChild(conditionImg);
+
+  const currentArr = ['cloud', 'feelslike_c', 'humidity', 'temp_c', 'vis_km', 'wind_kph', 'wind_dir'];
+
+  function conditionPar(el) {
+    const div = document.createElement('div');
+    currentCondition.appendChild(div);
+    div.textContent = `${el.charAt(0).toUpperCase() + el.slice(1)}: ${obj.current[el]}`;
+  }
+
+  for (let i = 0; i < currentArr.length; i++) {
+    conditionPar(currentArr[i]);
+  }
+
+  const forecastContainer = document.createElement('div');
+  forecastContainer.classList.add('forecast-container');
+  container.appendChild(forecastContainer);
+
+  const hourArr = ['condition', 'cloud', 'feelslike_c', 'humidity', 'temp_c'];
+
+  function hourPar(i, el) {
+    const div = document.createElement('div');
+    document.querySelectorAll('.hour-card')[i].appendChild(div);
+    if (el === 'condition') {
+      const img = document.createElement('img');
+      document.querySelectorAll('.hour-card')[i].appendChild(img);
+      div.textContent = obj.forecast.forecastday[0].hour[i][el].text;
+      img.src = 'https:' + obj.forecast.forecastday[0].hour[i][el].icon;
+    } else {
+      div.textContent = div.textContent = obj.forecast.forecastday[0].hour[i][el];
+    }
+  }
+
+  for (let i = 0; i < obj.forecast.forecastday[0].hour.length; i++) {
+    const hourCard = document.createElement('div');
+    forecastContainer.appendChild(hourCard);
+    hourCard.textContent = i + ':00';
+    hourCard.classList.add('hour-card');
+    for (let j = 0; j < hourArr.length; j++) {
+      hourPar(i, hourArr[j]);
+    }
+  }
 
   console.log(obj);
   console.log(obj.forecast.forecastday[0].hour);
