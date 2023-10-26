@@ -89,10 +89,10 @@ export default function page() {
     if (el === 'condition') {
       const img = document.createElement('img');
       document.querySelectorAll('.hour-card')[i].appendChild(img);
-      div.textContent = obj.forecast.forecastday[0].hour[i][el].text;
+      div.textContent = `${el}: ${obj.forecast.forecastday[0].hour[i][el].text}`;
       img.src = 'https:' + obj.forecast.forecastday[0].hour[i][el].icon;
     } else {
-      div.textContent = div.textContent = obj.forecast.forecastday[0].hour[i][el];
+      div.textContent = `${el}: ${obj.forecast.forecastday[0].hour[i][el]}`;
     }
   }
 
@@ -103,6 +103,31 @@ export default function page() {
     hourCard.classList.add('hour-card');
     for (let j = 0; j < hourArr.length; j++) {
       hourPar(i, hourArr[j]);
+    }
+  }
+
+  const dayArr = ['condition', 'avghumidity', 'avgtemp_c', 'maxwind_kph', 'daily_chance_of_rain'];
+
+  function dayPar(i, el) {
+    const div = document.createElement('div');
+    document.querySelectorAll('.day-card')[i - 1].appendChild(div);
+    if (el === 'condition') {
+      const img = document.createElement('img');
+      document.querySelectorAll('.day-card')[i - 1].appendChild(img);
+      div.textContent = `${el}: ${obj.forecast.forecastday[i].day[el].text}`;
+      img.src = 'https:' + obj.forecast.forecastday[i].day[el].icon
+    } else {
+      div.textContent = `${el}: ${obj.forecast.forecastday[i].day[el]}`;
+    } 
+  }
+
+  for (let i = 1; i < obj.forecast.forecastday.length; i++) {
+    const dayCard = document.createElement('div');
+    dayCard.classList.add('day-card');
+    dayCard.textContent = obj.forecast.forecastday[i].date;
+    forecastContainer.appendChild(dayCard);
+    for (let j = 0; j < dayArr.length; j++) {
+      dayPar(i, dayArr[j]);
     }
   }
 
