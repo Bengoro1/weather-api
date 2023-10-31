@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+
+html {
+  height: 100%;
+}
+
+* {
+  font-family: 'Inconsolata', monospace;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 50px 1fr 50px;
+}
+
+.header {
+  background-color: rgb(171, 58, 220);
+  color: white;
+  font-size: 26px;
+  padding: 9px 0 4px 25px;
+  font-weight: bolder;
+}
+
+.container {
+  display: grid;
+  padding: 40px;
+}
+
+input {
+  width: 50%;
+  border: none;
+  background-color: rgb(197, 197, 197);
+  padding: 8px 14px;
+  border-radius: 16px;
+  margin-bottom: 10px;
+}
+
+input + button {
+  margin-left: -60px;
+  border: none;
+  background-color: transparent;
+  border-left: 1px solid black;
+  cursor: pointer;
+}
+
+.day-container {
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+
+.current-condition {
+  grid-area: 1 / 2 / 3 / 3;
+  display: grid;
+  justify-items: end;
+  margin: 20px;
+  margin-top: -18px;
+}
+
+.forecast-hour {
+  display: grid;
+  grid-template-columns: repeat(24, 170px);
+  overflow-x: scroll;
+  gap: 5px;
+  padding: 5px;
+}
+
+.hour-card {
+  border-radius: 8px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.495);
+  padding: 10px;
+  height: 200px;
+}
+
+.forecast-day {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  margin-top: 20px;
+}
+
+.day-card {
+  border-radius: 8px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.495);
+  padding: 10px;
+}
+
+.footer {
+  background-color: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signature {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer img {
+  height: 25px;
+  cursor: pointer;
+}
