@@ -37,24 +37,24 @@ export default function page() {
     input.value = 'Bratislava';
     inputCon.appendChild(input);
     
-      const button = document.createElement('button');
-      inputCon.appendChild(button);
-      button.textContent = 'Search';
-      button.addEventListener('click', () => {
-        getData(input.value);
-      });
+    const button = document.createElement('button');
+    inputCon.appendChild(button);
+    button.textContent = 'Search';
+    button.addEventListener('click', () => {
+      getData(input.value);
+    });
+
+    window.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        button.click();
+      }
+    });
   }
   const container = document.querySelector('.container');
 
   while (container.childNodes.length > 1) {
     container.removeChild(container.lastChild);
   }
-
-  window.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      button.click();
-    }
-  });
 
   const currentDay = document.createElement('div');
   currentDay.classList.add('day-container');
@@ -71,8 +71,13 @@ export default function page() {
 
   function astroPar(el) {
     const div = document.createElement('div');
+    const p1 = document.createElement('p');
+    const p2 = document.createElement('p');
     astro.appendChild(div);
-    div.textContent = `${el.charAt(0).toUpperCase() + el.slice(1)}: ${obj.forecast.forecastday[0].astro[el]}`;
+    div.appendChild(p1);
+    div.appendChild(p2);
+    p1.textContent = el.charAt(0).toUpperCase() + el.slice(1) + ':';
+    p2.textContent = obj.forecast.forecastday[0].astro[el];
   }
 
   for (let i = 0; i < astroArr.length; i++) {
@@ -96,7 +101,40 @@ export default function page() {
   function conditionPar(el) {
     const div = document.createElement('div');
     currentCondition.appendChild(div);
-    div.textContent = `${el.charAt(0).toUpperCase() + el.slice(1)}: ${obj.current[el]}`;
+    const p1 = document.createElement('p');
+    const p2 = document.createElement('p');
+    div.appendChild(p1);
+    div.appendChild(p2);
+    switch (el) {
+      case 'cloud':
+        p1.textContent = 'Cloud: ';
+        p2.textContent = obj.current[el] + '%';
+        break;
+      case 'feelslike_c':
+        p1.textContent = 'Feelslike:';
+        p2.textContent = obj.current[el] + '°C';
+        break;
+      case 'humidity':
+        p1.textContent = 'Humidity:';
+        p2.textContent = obj.current[el] + '%';
+        break;
+      case 'temp_c':
+        p1.textContent = 'Temperature:';
+        p2.textContent = obj.current[el] + '°C';
+        break;
+      case 'vis_km':
+        p1.textContent = 'Visibility:';
+        p2.textContent = obj.current[el] + 'km';
+        break;
+      case 'wind_kph':
+        p1.textContent = 'Wind speed:';
+        p2.textContent = obj.current[el] + 'km/h';
+        break;
+      case 'wind_dir':
+        p1.textContent = 'Wind direction:';
+        p2.textContent = obj.current[el];
+        break;
+    }
   }
 
   for (let i = 0; i < currentArr.length; i++) {
@@ -116,13 +154,33 @@ export default function page() {
   function hourPar(i, el) {
     const div = document.createElement('div');
     document.querySelectorAll('.hour-card')[i].appendChild(div);
-    if (el === 'condition') {
-      const img = document.createElement('img');
-      document.querySelectorAll('.hour-card')[i].appendChild(img);
-      div.textContent = obj.forecast.forecastday[0].hour[i][el].text;
-      img.src = 'https:' + obj.forecast.forecastday[0].hour[i][el].icon;
-    } else {
-      div.textContent = `${el}: ${obj.forecast.forecastday[0].hour[i][el]}`;
+    const p1 = document.createElement('p');
+    const p2 = document.createElement('p');
+    div.appendChild(p1);
+    div.appendChild(p2);
+    switch (el) {
+      case 'condition':
+        const img = document.createElement('img');
+        document.querySelectorAll('.hour-card')[i].appendChild(img);
+        div.textContent = obj.forecast.forecastday[0].hour[i][el].text;
+        img.src = 'https:' + obj.forecast.forecastday[0].hour[i][el].icon;
+        break;
+      case 'cloud':
+        p1.textContent = 'Cloud:';
+        p2.textContent = obj.forecast.forecastday[0].hour[i][el] + '%';
+        break;
+      case 'feelslike_c':
+        p1.textContent = 'Feelslike:';
+        p2.textContent = obj.forecast.forecastday[0].hour[i][el] + '°C';
+        break;
+      case 'humidity':
+        p1.textContent = 'Humidity:';
+        p2.textContent = obj.forecast.forecastday[0].hour[i][el] + '%';
+        break;
+      case 'temp_c':
+        p1.textContent = 'Temperature:';
+        p2.textContent = obj.forecast.forecastday[0].hour[i][el] + '°C';
+        break;
     }
   }
 
@@ -141,14 +199,33 @@ export default function page() {
   function dayPar(i, el) {
     const div = document.createElement('div');
     document.querySelectorAll('.day-card')[i - 1].appendChild(div);
-    if (el === 'condition') {
-      const img = document.createElement('img');
-      document.querySelectorAll('.day-card')[i - 1].appendChild(img);
-      div.textContent = obj.forecast.forecastday[i].day[el].text;
-      img.src = 'https:' + obj.forecast.forecastday[i].day[el].icon;
-    } else {
-      div.textContent = `${el}: ${obj.forecast.forecastday[i].day[el]}`;
-    } 
+    const p1 = document.createElement('p');
+    const p2 = document.createElement('p');
+    div.appendChild(p1);
+    div.appendChild(p2);
+    switch (el) {
+      case 'condition':
+        const img = document.createElement('img');
+        document.querySelectorAll('.day-card')[i - 1].appendChild(img);
+        div.textContent = obj.forecast.forecastday[i].day[el].text;
+        img.src = 'https:' + obj.forecast.forecastday[i].day[el].icon;
+        break;
+      case 'avghumidity':
+        p1.textContent = 'Average humidity:';
+        p2.textContent = obj.forecast.forecastday[i].day[el] + '%'
+        break;
+      case 'avgtemp_c':
+        p1.textContent = 'Average temperature:';
+        p2.textContent = obj.forecast.forecastday[i].day[el] + '°C'
+        break;
+      case 'maxwind_kph':
+        p1.textContent = 'Max wind speed:';
+        p2.textContent = obj.forecast.forecastday[i].day[el] + 'km/h'
+        break;
+      case 'daily_chance_of_rain':
+        p1.textContent = 'Chance of rain today:';
+        p2.textContent = obj.forecast.forecastday[i].day[el] + '%'
+    }
   }
 
   for (let i = 1; i < obj.forecast.forecastday.length; i++) {
