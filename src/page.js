@@ -3,26 +3,52 @@ import getData from './get-data.js';
 
 export default function page() {
   if (!document.querySelector('.container')) {
+    const header = document.createElement('div');
+    header.classList.add('header');
+    document.body.appendChild(header);
+    header.textContent = 'Weather API'
+
     const container = document.createElement('div');
     container.classList.add('container');
     document.body.appendChild(container);
+
+    const footer = document.createElement('div');
+    document.body.appendChild(footer);
+    footer.classList.add('footer');
+
+    const signature = document.createElement('div');
+    let d = new Date();
+    let year = d.getFullYear();
+    signature.textContent = `Copyright © Bengoro1 ${year}`;
+    signature.setAttribute('class', 'signature');
+    footer.appendChild(signature);
+    const gitLogo = document.createElement('img');
+    gitLogo.setAttribute('src', './github.jpg');
+    gitLogo.setAttribute('alt', 'Logo');
+    gitLogo.setAttribute('class', 'git-logo');
+    gitLogo.setAttribute('onclick', "window.open('https://github.com/Bengoro1','_newtab');");
+    signature.appendChild(gitLogo);
+    
+    const inputCon = document.createElement('div');
+    container.appendChild(inputCon);
+    inputCon.classList.add('input-container');
+  
+    const input = document.createElement('input');
+    input.value = 'Bratislava';
+    inputCon.appendChild(input);
+    
+      const button = document.createElement('button');
+      inputCon.appendChild(button);
+      button.textContent = 'Search';
+      button.addEventListener('click', () => {
+        getData(input.value);
+      });
   }
   const container = document.querySelector('.container');
 
-  while (container.firstChild) {
-    container.removeChild(container.firstChild);
+  while (container.childNodes.length > 1) {
+    container.removeChild(container.lastChild);
   }
-
-  const input = document.createElement('input');
-  input.value = 'Bratislava';
-  container.appendChild(input);
-  
-  const button = document.createElement('button');
-  container.appendChild(button);
-  button.textContent = 'click';
-  button.addEventListener('click', () => {
-    getData(input.value);
-  });
 
   window.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -77,9 +103,13 @@ export default function page() {
     conditionPar(currentArr[i]);
   }
 
-  const forecastContainer = document.createElement('div');
-  forecastContainer.classList.add('forecast-container');
-  container.appendChild(forecastContainer);
+  const forecastHour = document.createElement('div');
+  forecastHour.classList.add('forecast-hour');
+  container.appendChild(forecastHour);
+
+  const forecastDay = document.createElement('div');
+  forecastDay.classList.add('forecast-day');
+  container.appendChild(forecastDay);
 
   const hourArr = ['condition', 'cloud', 'feelslike_c', 'humidity', 'temp_c'];
 
@@ -89,7 +119,7 @@ export default function page() {
     if (el === 'condition') {
       const img = document.createElement('img');
       document.querySelectorAll('.hour-card')[i].appendChild(img);
-      div.textContent = `${el}: ${obj.forecast.forecastday[0].hour[i][el].text}`;
+      div.textContent = obj.forecast.forecastday[0].hour[i][el].text;
       img.src = 'https:' + obj.forecast.forecastday[0].hour[i][el].icon;
     } else {
       div.textContent = `${el}: ${obj.forecast.forecastday[0].hour[i][el]}`;
@@ -98,7 +128,7 @@ export default function page() {
 
   for (let i = 0; i < obj.forecast.forecastday[0].hour.length; i++) {
     const hourCard = document.createElement('div');
-    forecastContainer.appendChild(hourCard);
+    forecastHour.appendChild(hourCard);
     hourCard.textContent = i + ':00';
     hourCard.classList.add('hour-card');
     for (let j = 0; j < hourArr.length; j++) {
@@ -114,8 +144,8 @@ export default function page() {
     if (el === 'condition') {
       const img = document.createElement('img');
       document.querySelectorAll('.day-card')[i - 1].appendChild(img);
-      div.textContent = `${el}: ${obj.forecast.forecastday[i].day[el].text}`;
-      img.src = 'https:' + obj.forecast.forecastday[i].day[el].icon
+      div.textContent = obj.forecast.forecastday[i].day[el].text;
+      img.src = 'https:' + obj.forecast.forecastday[i].day[el].icon;
     } else {
       div.textContent = `${el}: ${obj.forecast.forecastday[i].day[el]}`;
     } 
@@ -125,14 +155,9 @@ export default function page() {
     const dayCard = document.createElement('div');
     dayCard.classList.add('day-card');
     dayCard.textContent = obj.forecast.forecastday[i].date;
-    forecastContainer.appendChild(dayCard);
+    forecastDay.appendChild(dayCard);
     for (let j = 0; j < dayArr.length; j++) {
       dayPar(i, dayArr[j]);
     }
   }
-
-  console.log(obj);
-  console.log(obj.forecast.forecastday[0].hour);
-  const d = new Date();
-  console.log(d);
 }
